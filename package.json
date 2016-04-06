@@ -1,5 +1,5 @@
 {
-  "name": "okta-saml-aws-login-node",
+  "name": "@redventures/okta-aws",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RedVentures/okta-saml-aws-login-node.git"
+    "url": "git+https://github.com/RedVentures/okta-aws.git"
   },
   "author": "James Huston <jhuston@redventures.com>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/RedVentures/okta-saml-aws-login-node/issues"
+    "url": "https://github.com/RedVentures/okta-aws/issues"
   },
-  "homepage": "https://github.com/RedVentures/okta-saml-aws-login-node#readme",
+  "homepage": "https://github.com/RedVentures/okta-aws#readme",
   "dependencies": {
     "aws-sdk": "2.2.37",
     "cheerio": "^0.20.0",
