@@ -86,5 +86,6 @@ DEBUG=auth* okta-aws -- /bin/bash
   * Fix the ghetto role parsing from the SAML
   * Add --help flag
   * Add some better errors when second role is denied access
-  * Catch <ctrl-c> and exit gracefully
+  * Catch **ctrl-c** and exit gracefully
   * Break index.js into a couple of smaller modules so it doesn't code smell like a stinky long file
+  * Write enough unit tests so that James will let us deploy this thing. Oh, wait.
