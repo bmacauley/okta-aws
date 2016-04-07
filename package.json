@@ -1,5 +1,5 @@
 {
-  "name": "@redventures/okta-aws",
+  "name": "okta-aws",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
