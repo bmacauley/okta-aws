@@ -22,7 +22,7 @@ If you only want to assume role into a single account, you just need the Okta ba
 ```
 [okta]
 baseUrl=https://<yourorghere>.okta.com/
-appUrl=https://<yourorghere/app/<my_aws_app_name>/<somekeyfromokta>/sso/saml
+appUrl=https://<yourorghere>/app/<my_aws_app_name>/<somekeyfromokta>/sso/saml
 ```
 
 ## Installing
@@ -44,4 +44,47 @@ bash-3.2$
 
 ## Assuming role into a second account
 
-Coming soon to a README near you.
+I think that [AWS-Vault](https://github.com/99designs/aws-vault) is a super fantastic tool for managing non temporary AWS keys on your local machine. If you properly setup your `~/.aws/config` file you can use those keys to assume roles in the accounts where the user/keys have privileges. I wanted to use the same format for the profiles so that a single profile entry could potentially be used by AWS-Vault and okta-aws. Here is an example profile entry:
+
+```
+[profile mysecond-adm]
+source_profile = myfirst-adm
+role_arn = arn:aws:iam::<accountId>:role/<roleName>
+```
+
+`accountId` and `roleName` would be replaced with the info from the 2nd account/role that you are using the first role you assumed to jump in to. For our purposes here source_profile is ignored because that is set by the `appUrl` in the `~/.okta-aws/config` file and doesn't have an effect at this stage.
+
+Once you add the entry for you secondary profile, you can run command with it by specifying it as you 1st parameter to `okta-aws`
+
+```
+okta-aws mysecond-adm -- /bin/bash
+```
+
+This will get you a bash prompt with the credentials for the 2nd role generated using the credentials from the first role. Basically something like this:
+
+```
+okta login ->
+  SAML assumeRole to role arn in okta app (first role) ->
+    get creds for first role ->
+      assumeRole to arn in mysecond-adm profile ->
+        get creds for mysecond-adm ->
+          execute command with mysecond-adm creds in environment
+```
+
+## Debugging
+
+I use the (debug)[https://www.npmjs.com/package/debug] module so you can get more output along the way by running:
+
+```
+DEBUG=auth* okta-aws -- /bin/bash
+```
+
+`DEBUG=*` will also get you output from SuperAgent and some other modules I use.
+
+## Known issues/Areas for improvement
+  * Better parsing of parameters to make adding flags doable
+  * Fix the ghetto role parsing from the SAML
+  * Add --help flag
+  * Add some better errors when second role is denied access
+  * Catch <ctrl-c> and exit gracefully
+  * Break index.js into a couple of smaller modules so it doesn't code smell like a stinky long file
