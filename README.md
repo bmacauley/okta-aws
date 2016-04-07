@@ -1,5 +1,7 @@
 # okta-aws
 
+Assume role into your main account with the option off assuming role into a secondary account using okta/SAML SSO.
+
 At Red Ventures we have one interesting problem. Right, just one. Go with that.
 
 In our cloud infrastructure we need to have users. Interesting right? That's not the good part.
