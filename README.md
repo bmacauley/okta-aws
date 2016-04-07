@@ -73,7 +73,7 @@ okta login ->
 
 ## Debugging
 
-I use the (debug)[https://www.npmjs.com/package/debug] module so you can get more output along the way by running:
+I use the [debug](https://www.npmjs.com/package/debug) module so you can get more output along the way by running:
 
 ```
 DEBUG=auth* okta-aws -- /bin/bash
