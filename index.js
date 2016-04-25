@@ -32,6 +32,16 @@ let awsConfig = ini.parse(
 let profileObject = awsConfig[`profile ${myArgs.profile}`];
 debugAws('profile info', profileObject);
 
+if (!profileObject) {
+  console.log(`Invalid profile, no match found for ${myArgs.profile}`);
+  process.exit(1);
+}
+
+if (!profileObject.role_arn) {
+  console.log(`Invalid profile, missing role_arn on profile ${myArgs.profile}`);
+  process.exit(1);
+}
+
 /**
  * Load our settings for okta
  */
@@ -295,10 +305,14 @@ function assumeRoleSecondary() {
     apiVersion: '2011-06-15'
   });
 
-  sts.assumeRole({
+  let requestParams = {
     RoleArn: profileObject.role_arn,
     RoleSessionName: 'fromRvMain'
-  }, handleAssumeRoleSecondary);
+  };
+
+  debugAws('Making secondary assume role', requestParams);
+
+  sts.assumeRole(requestParams, handleAssumeRoleSecondary);
 }
 
 /**
@@ -309,18 +323,18 @@ function assumeRoleSecondary() {
 function handleAssumeRoleSecondary(err, responseData) {
   // debugAws('Secondary Assume', err, responseData);
   if (err) {
-    debugAws('Error assuming secondary role', err);
+    console.log('Error assuming secondary role', err);
     return;
   }
 
   let credentials = pluck('Credentials', responseData);
 
   if (!credentials) {
-    debugAws('Empty credentials returned');
+    console.log('Empty credentials returned');
     return;
   }
 
-  debugAws('Executing command', myArgs.command);
+  console.log('Executing command', myArgs.command);
   return spawnProcess(credentials, myArgs);
 }
 
