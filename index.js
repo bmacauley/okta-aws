@@ -113,6 +113,11 @@ function processLoginResponse(err, result) {
     }
 
     getMfaCode(function (inputErr, mfaCode) {
+      if (inputErr) {
+        // log a newline so the prompt starts on the next line
+        console.log('');
+        return;
+      }
       doMfa(result.stateToken, tokenFactor, mfaCode, processMfaResponse);
     });
   }
@@ -345,15 +350,35 @@ function handleAssumeRoleSecondary(err, responseData) {
  */
 read({
   prompt: 'Username: ',
-  silent: false
+  silent: false,
+  default: ''
 }, function(er, inputUser) {
+  if (er) {
+    // calls w/error on sigint (i.e. control-c)
+    console.log('');
+    return;
+  }
+
   username = inputUser;
 
   read({
     prompt: 'Password: ',
-    silent: true
+    silent: true,
+    default: ''
   }, function(er, inputPass) {
+    if (er) {
+      // calls w/error on sigint (i.e. control-c)
+      console.log('');
+      return;
+    }
+
     password = inputPass;
+
+    if (!username || !password) {
+      console.log('No username and password supplied!');
+      return;
+    }
+
     login(username, password, processLoginResponse);
   });
 });
