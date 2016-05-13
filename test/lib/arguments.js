@@ -1,6 +1,7 @@
 'use strict';
 let args = require('../../lib/arguments');
 
+/*eslint-env node,es6,mocha*/
 describe('When parsing valid arguments w/ no profile, 1 command', function () {
   it('should properly get us a single element array for a single command',
     function () {
