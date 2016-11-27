@@ -1,5 +1,7 @@
 # okta-aws
 
+**Please note** - This tool has been replaced by [oktad](https://github.com/redventures/oktad). `oktad` will be receiving all updates and support going forward.
+
 Assume role into your main account with the option off assuming role into a secondary account using okta/SAML SSO.
 
 At Red Ventures we have one interesting problem. Right, just one. Go with that.
